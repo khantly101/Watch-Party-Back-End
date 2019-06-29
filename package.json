@@ -1,0 +1,31 @@
+{
+  "name": "watch-party-back-end",
+  "version": "1.0.0",
+  "description": "Luis Rosario - Product manager",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mujbadar/Watch-Party-Back-End.git"
+  },
+  "author": "Mohammad Badar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mujbadar/Watch-Party-Back-End/issues"
+  },
+  "homepage": "https://github.com/mujbadar/Watch-Party-Back-End#readme",
+  "dependencies": {
+    "bcrypt": "^3.0.6",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
+    "express-session": "^1.16.2",
+    "method-override": "^3.0.0",
+    "mongoose": "^5.6.2",
+    "multer": "^1.4.1",
+    "socket.io": "^2.2.0"
+  }
+}
