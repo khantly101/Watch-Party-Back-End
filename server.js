@@ -27,7 +27,7 @@ const sessionsContoller = require('./controllers/session.js')
 const whiteList = ['http://localhost:3000']
 const corsOptions = {
   origin: (origin, callback) => {
-    if (whiteList.indexOf(origin) !== -1) {
+    if (origin === undefined || whiteList.indexOf(origin) !== -1) {
       callback(null, true);
     } else {
       callback(new Error("BLOCKED BY CORS POLICY"));
@@ -50,6 +50,8 @@ mongoose.connection.on('disconnected', () => {
 mongoose.connection.once('open', () => {
   console.log('You are connected to MongoDB!');
 })
+
+app.use(cors(corsOptions))
 
 ////////////
 //Middleware
