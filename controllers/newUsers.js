@@ -3,10 +3,6 @@ const router = express.Router()
 const User = require('../models/user.js')
 const bcrypt = require('bcrypt')
 
-router.get('/', (req, res) => {
-  res.send('this is the new user page')
-})
-
 router.post('/', (req, res) => {
   User.create(req.body, (error, newUser) => {
     if (error) {
