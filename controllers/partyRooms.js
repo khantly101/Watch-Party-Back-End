@@ -6,7 +6,7 @@ router.get('/', (req, res) => {
   PartyRoom.find({}, (error, rooms) => {
     if (error) {
       res.status(400).json({error: error.message})
-    }else {
+    }else if (req.session.currentUser) {
       res.status(200).json(rooms)
     }
   })
