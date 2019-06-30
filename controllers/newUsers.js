@@ -5,8 +5,6 @@ const bcrypt = require('bcrypt')
 
 //Create new user
 router.post('/', (req, res) => {
-  //Password encryption
-  req.body.password = bcrypt.hashsync(req.body.password, bcrypt.gensaltsync(10))
   User.create(req.body, (error, newUser) => {
     if (error) {
       res.status(400).json({error: error.message})
