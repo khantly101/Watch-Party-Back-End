@@ -8,6 +8,7 @@ const mongoose = require('mongoose')
 const cors = require('cors')
 const session = require('express-session')
 const http = require('http').createServer(app)
+require('dotenv').config()
 
 //Socket Setup
 const io = require('socket.io')(http)
@@ -19,8 +20,9 @@ const sessionSecret = process.env.SECRET
 
 //Controllers
 const partyRoomController = require('./controllers/partyRooms.js')
-const newUserContoller = require('./controllers/newUsers.js')
-const sessionsContoller = require('./controllers/session.js')
+const newUserController = require('./controllers/newUsers.js')
+const sessionsController = require('./controllers/session.js')
+const membersController = require('./controllers/members.js')
 
 //Cors Policy
 /////////////
@@ -68,7 +70,9 @@ app.use(express.json())
 
 //Controller routes
 app.use('/partyroom', partyRoomController)
-app.use('/new', newUserContoller)
+app.use('/new', newUserController)
+app.use('/login', sessionsController)
+app.use('/member', membersController)
 
 ///////////
 //ROUTES
@@ -78,6 +82,6 @@ app.get('/', (req, res) => {
 })
 
 
-app.listen(PORT, () => {
-  console.log('Listening on port:', PORT);
+app.listen(process.env.PORT, () => {
+  console.log('Listening on port:', process.env.PORT);
 })
