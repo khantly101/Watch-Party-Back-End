@@ -90,19 +90,24 @@ io.on(`connection`, (socket) => {
   })
 
 //Socket Joining Chat Room
-  socket.on(`room`, (room, userName, pic) => {
-    socket.join(room)
-    // io.to(room).emit(`chat message`, `has joined this chat`, pic,userName)
-    console.log(`${userName} joined: ${ room } with pic ${pic}`)
+  socket.on(`room`, (chatRoom, userName, pic) => {
+    socket.join(chatRoom)
+    io.to(chatRoom).emit(`chat message`, `has joined this chat`, pic,userName)
+    console.log(`${userName} joined: ${ chatRoom } with pic ${pic}`)
   })
 
+  //Trasmiting message back to socket connections inside unique room
+  socket.on(`chat message`, (msg,chatRoom,pic,userName) => {
+    //Lets Check to see if server is receiving message from client.js
+    console.log(`this message was sent: ${ msg }`)
+    //Lets Check to see if server is receiving room name from client.js
+    console.log(`the room is: ${ chatRoom }`)
+    //Send message back to room that message was sent from
+    io.to(chatRoom).emit(`chat message`, msg,pic,userName)
+  })
 })
 
 //Manual Server Setup
 http.listen(process.env.PORT, () => {
   console.log('Listening on port:', process.env.PORT);
 })
-
-// app.listen(process.env.PORT, () => {
-//   console.log('Listening on port:', process.env.PORT);
-// })
