@@ -7,6 +7,7 @@ const bcrypt = require('bcrypt')
 router.post('/', (req, res) => {
   User.findOne({ userName: req.body.userName }, (error, foundUsers) => {
     if (bcrypt.compareSync(req.body.password, foundUsers.password)) {
+      console.log(foundUsers)
         res.status(200).json(foundUsers)
     } else if (error) {
       res.status(400).json({error: error.message})
