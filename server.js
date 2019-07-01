@@ -5,9 +5,9 @@
 const express = require('express')
 const app = express()
 const mongoose = require('mongoose')
+const http = require('http').createServer(app)
 const cors = require('cors')
 const session = require('express-session')
-const http = require('http').createServer(app)
 require('dotenv').config()
 
 //Socket Setup
@@ -30,12 +30,12 @@ const whiteList = ['http://localhost:3000']
 const corsOptions = {
   origin: (origin, callback) => {
     if (origin === undefined || whiteList.indexOf(origin) !== -1) {
-      callback(null, true);
+      callback(null, true)
     } else {
-      callback(new Error("BLOCKED BY CORS POLICY"));
-    };
+      callback(new Error("BLOCKED BY CORS POLICY"))
+    }
   }
-};
+}
 
 /////////////
 //Database
@@ -53,20 +53,17 @@ mongoose.connection.once('open', () => {
   console.log('You are connected to MongoDB!');
 })
 
-app.use(cors(corsOptions))
-
 ////////////
 //Middleware
 /////////////
 
-// app.use(cors(corsOptions))
-app.use(express.urlencoded({extended:true}))
+app.use(cors(corsOptions))
 app.use(express.json())
-// app.use(session({
-//   secret: sessionSecret,
-//   resave: false,
-//   saveUnintialized: false
-// }))
+app.use(session({
+  secret: sessionSecret,
+  resave: false,
+  saveUninitialized: false
+}))
 
 //Controller routes
 app.use('/partyroom', partyRoomController)
@@ -81,6 +78,11 @@ app.get('/', (req, res) => {
   res.send('Hello World')
 })
 
-app.listen(process.env.PORT, () => {
+//Socket Server Setup
+http.listen(process.env.PORT, () => {
   console.log('Listening on port:', process.env.PORT);
 })
+
+// app.listen(process.env.PORT, () => {
+//   console.log('Listening on port:', process.env.PORT);
+// })
