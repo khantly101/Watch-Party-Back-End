@@ -2,6 +2,7 @@ const express = require('express')
 const router = express.Router()
 const User = require('../models/user.js')
 
+//Get route to display all users to members
 router.get('/', (req, res) => {
   if(req.session.currentUser) {
     User.find({}, (error, allUsers) => {
@@ -14,6 +15,7 @@ router.get('/', (req, res) => {
   }
 })
 
+//Edit route for members.
 router.put('/:username/edit', (req, res) => {
   User.findByIdAndUpdate(req.params.id, (error, updateUser) => {
     if (error) {
