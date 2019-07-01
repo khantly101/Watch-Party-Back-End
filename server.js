@@ -62,11 +62,11 @@ app.use(cors(corsOptions))
 // app.use(cors(corsOptions))
 app.use(express.urlencoded({extended:true}))
 app.use(express.json())
-// app.use(session({
-//   secret: sessionSecret,
-//   resave: false,
-//   saveUnintialized: false
-// }))
+app.use(session({
+  secret: sessionSecret,
+  resave: false,
+  saveUnintialized: false
+}))
 
 //Controller routes
 app.use('/partyroom', partyRoomController)
