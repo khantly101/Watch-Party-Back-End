@@ -78,7 +78,27 @@ app.get('/', (req, res) => {
   res.send('Hello World')
 })
 
-//Socket Server Setup
+////////////////////////////////
+//// Socket Listening  //////
+//////////////////////////////
+
+//Enabling socket io connection listener
+io.on(`connection`, (socket) => {
+  console.log(`A user connected`)
+  socket.on('disconnect', function(){
+    console.log('user disconnected')
+  })
+
+//Socket Joining Chat Room
+  socket.on(`room`, (room, userName, pic) => {
+    socket.join(room)
+    // io.to(room).emit(`chat message`, `has joined this chat`, pic,userName)
+    console.log(`${userName} joined: ${ room } with pic ${pic}`)
+  })
+
+})
+
+//Manual Server Setup
 http.listen(process.env.PORT, () => {
   console.log('Listening on port:', process.env.PORT);
 })
