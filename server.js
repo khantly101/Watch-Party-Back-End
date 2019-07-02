@@ -90,9 +90,10 @@ io.on(`connection`, (socket) => {
   })
 
 //Socket Joining Chat Room
-  socket.on(`room`, (chatRoom, userName, pic) => {
+  socket.on(`room`, (chatRoom, userName, pic, id) => {
     socket.join(chatRoom)
     io.to(chatRoom).emit(`chat message`, `has joined this chat`, pic,userName)
+    io.to(chatRoom).emit(`setId`, `setting Id`, id)
     console.log(`${userName} joined: ${ chatRoom } with pic ${pic}`)
   })
 
@@ -105,6 +106,16 @@ io.on(`connection`, (socket) => {
     //Send message back to room that message was sent from
     io.to(chatRoom).emit(`chat message`, msg,pic,userName)
   })
+
+  //Send Video Start to other sockets
+  socket.on(`play`, (msg,chatRoom,playerId) => {
+    //Lets Check to see if server is receiving message from client.js
+    console.log(msg)
+    console.log(chatRoom)
+    //Send message back to room that message was sent from
+    io.to(chatRoom).emit(`play`, msg, playerId)
+  })
+
 })
 
 //Manual Server Setup
