@@ -111,13 +111,13 @@ io.on(`connection`, (socket) => {
   })
 
   //Trasmiting message back to socket connections inside unique room
-  socket.on(`chat message`, (msg,chatRoom,pic,userName) => {
+  socket.on(`sendMessage`, (msg,chatRoom,pic,userName) => {
     //Lets Check to see if server is receiving message from client.js
     console.log(`this message was sent: ${ msg }`)
     //Lets Check to see if server is receiving room name from client.js
     console.log(`the room is: ${ chatRoom }`)
     //Send message back to room that message was sent from
-    io.to(chatRoom).emit(`chat message`, msg,pic,userName)
+    io.to(chatRoom).emit(`recieveMessage`, msg,pic,userName)
   })
 
   //Send Video Start to other sockets
