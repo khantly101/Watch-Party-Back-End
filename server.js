@@ -23,6 +23,7 @@ const partyRoomController = require('./controllers/partyRooms.js')
 const newUserController = require('./controllers/newUsers.js')
 const sessionsController = require('./controllers/session.js')
 const membersController = require('./controllers/members.js')
+const uploadController = require('./controllers/uploads.js')
 
 //Cors Policy
 /////////////
@@ -70,6 +71,7 @@ app.use('/partyroom', partyRoomController)
 app.use('/new', newUserController)
 app.use('/login', sessionsController)
 app.use('/member', membersController)
+app.use('/upload', uploadController)
 
 ///////////
 //ROUTES

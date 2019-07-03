@@ -10,20 +10,11 @@ router.post('/', (req, res) => {
       console.log(foundUsers)
         res.status(200).json(foundUsers)
     } else if (error) {
-      res.status(400).json({error: error.message})
+      console.log('Not able to sign in');
+      res.json({error: error.message})
     }
   })
 })
 
-//Logout user session
-router.delete('/', (req, res) => {
-  res.session.destroy((error, logout) => {
-    if (error) {
-      res.status(400).json({error: error.messge})
-    }else {
-      res.status(200)
-    }
-  })
-})
 
 module.exports = router
