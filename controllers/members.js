@@ -16,7 +16,7 @@ router.get('/', (req, res) => {
 })
 
 //Edit route for members.
-router.put('/:username/edit', (req, res) => {
+router.put('/:id/edit', (req, res) => {
   User.findByIdAndUpdate(req.params.id, (error, updateUser) => {
     if (error) {
       res.status(400).json({error: error.message})

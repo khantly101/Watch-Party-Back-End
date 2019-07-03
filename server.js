@@ -23,6 +23,7 @@ const partyRoomController = require('./controllers/partyRooms.js')
 const newUserController = require('./controllers/newUsers.js')
 const sessionsController = require('./controllers/session.js')
 const membersController = require('./controllers/members.js')
+const uploadController = require('./controllers/uploads.js')
 
 //Cors Policy
 /////////////
@@ -74,6 +75,7 @@ app.use('/partyroom', partyRoomController)
 app.use('/new', newUserController)
 app.use('/login', sessionsController)
 app.use('/member', membersController)
+app.use('/upload', uploadController)
 
 ///////////
 //ROUTES
@@ -89,14 +91,28 @@ app.get('/', (req, res) => {
 //Enabling socket io connection listener
 io.on(`connection`, (socket) => {
   console.log(`A user connected`)
-  socket.on('disconnect', function(){
-    console.log('user disconnected')
+
+  socket.on('disconnecting', function(){
+    console.log(`Subscribed Rooms ${socket.rooms}`)
+    // var self = this;
+    // var rooms = Object.keys(self.rooms);
+    console.log(socket.rooms)
+    console.log(Object.keys(socket.rooms)[1])
+    // rooms.forEach(function(room){
+    //     self.to(room).emit('user left', self.id + 'left');
+    io.in(Object.keys(socket.rooms)[1]).emit(`delete`, `deleting Id`, socket.id)
+    })
+  socket.on('disconnect', () => {
+    console.log(`A user disconnected ` + socket.id)
+    // console.log(socket)
+    // io.in(`Room Name Test`).emit(`delete`, `deleting Id`, socket.id)
   })
 
 //Socket Joining Chat Room
-  socket.on(`room`, (chatRoom, userName, pic) => {
+  socket.on(`room`, (chatRoom, userName, pic, id) => {
     socket.join(chatRoom)
     io.to(chatRoom).emit(`chat message`, `has joined this chat`, pic,userName)
+    io.to(chatRoom).emit(`setId`, `setting Id`, id)
     console.log(`${userName} joined: ${ chatRoom } with pic ${pic}`)
   })
 
@@ -109,6 +125,17 @@ io.on(`connection`, (socket) => {
     //Send message back to room that message was sent from
     io.to(chatRoom).emit(`chat message`, msg,pic,userName)
   })
+
+  //Send Video Start to other sockets
+  socket.on(`play`, (msg,chatRoom,playerId) => {
+    //Lets Check to see if server is receiving message from client.js
+    console.log(msg)
+    console.log(chatRoom)
+    console.log(playerId)
+    //Send message back to room that message was sent from
+    io.to(chatRoom).emit(`play`, msg, playerId)
+  })
+
 })
 
 //Manual Server Setup

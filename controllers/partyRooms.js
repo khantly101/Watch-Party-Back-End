@@ -15,16 +15,18 @@ router.get('/', (req, res) => {
 })
 
 //Create partyroom for logged in members.
-router.post('/new', (req, res) => {
-  PartyRoom.create(req.body, (error, newPR) => {
-    if (error) {
-      res.status(400).json({error: error.message})
-    }else {
-      res.status(200).json(newPR)
-    }
+router.post('/:id/new', (req, res) => {
+  PartyRoom.create(req.body, (err, partyRoom) => {
+    User.findByIdAndUpdate({username: req.params.id}, {$push: {partyrooms: partyRoom._id}}, {new: true},
+      (error,updateMember) => {
+        if (error) {
+          res.status(400).json({error: error.message})
+        }else {
+          res.status(200).json(updateMember)
+        }
+      })
+    })
   })
-})
-
 //Edit Partyroom
 router.put('/:id', (req, res) => {
   PartyRoom.findByIdAndUpdate(req.params.id, (error, prEdit) => {
