@@ -70,7 +70,6 @@ app.use(session({
 app.use('/partyroom', partyRoomController)
 app.use('/new', newUserController)
 app.use('/login', sessionsController)
-app.use('/member', membersController)
 app.use('/upload', uploadController)
 
 ///////////
@@ -87,21 +86,8 @@ app.get('/', (req, res) => {
 //Enabling socket io connection listener
 io.on(`connection`, (socket) => {
   console.log(`A user connected`)
-
-  socket.on('disconnecting', function(){
-    console.log(`Subscribed Rooms ${socket.rooms}`)
-    // var self = this;
-    // var rooms = Object.keys(self.rooms);
-    console.log(socket.rooms)
-    console.log(Object.keys(socket.rooms)[1])
-    // rooms.forEach(function(room){
-    //     self.to(room).emit('user left', self.id + 'left');
-    io.in(Object.keys(socket.rooms)[1]).emit(`delete`, `deleting Id`, socket.id)
-    })
-  socket.on('disconnect', () => {
-    console.log(`A user disconnected ` + socket.id)
-    // console.log(socket)
-    // io.in(`Room Name Test`).emit(`delete`, `deleting Id`, socket.id)
+  socket.on('disconnect', function(){
+    console.log('user disconnected')
   })
 
 //Socket Joining Chat Room
@@ -127,7 +113,6 @@ io.on(`connection`, (socket) => {
     //Lets Check to see if server is receiving message from client.js
     console.log(msg)
     console.log(chatRoom)
-    console.log(playerId)
     //Send message back to room that message was sent from
     io.to(chatRoom).emit(`play`, msg, playerId)
   })
