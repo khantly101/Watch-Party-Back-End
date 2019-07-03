@@ -4,7 +4,6 @@ const User = require('../models/user.js')
 
 //Get route to display all users to members
 router.get('/', (req, res) => {
-  if(req.session.currentUser) {
     User.find({}, (error, allUsers) => {
       if (error) {
         res.status(400).json({error: error.message})
@@ -12,16 +11,29 @@ router.get('/', (req, res) => {
         res.status(200).json(allUsers)
       }
     })
-  }
 })
 
 //Edit route for members.
 router.put('/:id/edit', (req, res) => {
-  User.findByIdAndUpdate(req.params.id, (error, updateUser) => {
+  console.log(req.params.id);
+  User.findByIdAndUpdate(req.params.id, req.body, {new:true}, (error, updateUser) => {
+    if (error) {
+      console.log('there was an error');
+      res.json({error: error.message})
+    } else {
+      res.status(200).json(updateUser)
+      console.log(updateUser);
+    }
+  })
+})
+
+//DELETE PROFILE
+router.delete('/:id', (req, res) => {
+  User.findByIdAndRemove(req.params.id, (error, deleteUser) => {
     if (error) {
       res.status(400).json({error: error.message})
     } else {
-      res.status(200).json(updateUser)
+      res.status(200).json(deleteUser)
     }
   })
 })

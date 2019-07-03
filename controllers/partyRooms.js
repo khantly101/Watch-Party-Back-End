@@ -17,7 +17,7 @@ router.get('/', (req, res) => {
 //Create partyroom for logged in members.
 router.post('/:id/new', (req, res) => {
   PartyRoom.create(req.body, (err, partyRoom) => {
-    User.findByIdAndUpdate({username: req.params.id}, {$push: {partyrooms: partyRoom._id}}, {new: true},
+    User.findByIdAndUpdate({_id: req.params.id}, {$push: {partyrooms: partyRoom._id}}, {new: true},
       (error,updateMember) => {
         if (error) {
           res.status(400).json({error: error.message})
@@ -27,9 +27,10 @@ router.post('/:id/new', (req, res) => {
       })
     })
   })
+
 //Edit Partyroom
 router.put('/:id', (req, res) => {
-  PartyRoom.findByIdAndUpdate(req.params.id, (error, prEdit) => {
+  PartyRoom.findByIdAndUpdate(req.params.id, req.body, {new:true}, (error, prEdit) => {
     if (error) {
       res.status(400).json({error: error.message})
     } else {

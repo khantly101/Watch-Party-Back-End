@@ -6,7 +6,8 @@ const partyRoomSchema = new Schema({
   nameSpace: { type: String, require: true},
   creator: { type: String, require:true },
   img: String,
-  description: String
+  description: String,
+  messages: []
 })
 
 const PartyRoom = mongoose.model('PartyRoom', partyRoomSchema)
