@@ -71,6 +71,7 @@ app.use('/partyroom', partyRoomController)
 app.use('/new', newUserController)
 app.use('/login', sessionsController)
 app.use('/upload', uploadController)
+app.use('/member', membersController)
 
 ///////////
 //ROUTES

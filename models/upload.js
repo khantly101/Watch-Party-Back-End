@@ -4,9 +4,9 @@ const multer = require('multer')
 const multerS3 = require('multer-s3')
 
 aws.config.update({
-  secretAccessKey: '',
-  accessKeyId: '',
-  region: ''
+  secretAccessKey: 'mv6WsYhtu/FcJIKzzVTMDsCZJ/IUxri2Hskl7IJr',
+  accessKeyId: 'AKIAIBNPABUELMQP22HQ',
+  region: 'us-east-2'
 })
 
 const app = express()
@@ -15,7 +15,9 @@ const s3 = new aws.S3()
 const upload = multer({
   storage: multerS3({
     s3: s3,
-    bucket:'',
+    bucket:'vparty',
+    /// The post man request at .location is fine until I add this....
+    // acl: 'public-read',
     metadata: (req, file, cb) => {
       cb(null, {fieldName: file.fieldname})
     },
