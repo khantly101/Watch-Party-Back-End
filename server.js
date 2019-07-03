@@ -129,6 +129,14 @@ io.on(`connection`, (socket) => {
     //Send message back to room that message was sent from
     io.to(chatRoom).emit(`play`, msg, playerId)
   })
+  socket.on(`stop`, (msg,chatRoom,playerId) => {
+    //Lets Check to see if server is receiving message from client.js
+    console.log(msg)
+    console.log(chatRoom)
+    console.log(playerId)
+    //Send message back to room that message was sent from
+    io.to(chatRoom).emit(`stop`, msg, playerId)
+  })
 
 })
 
