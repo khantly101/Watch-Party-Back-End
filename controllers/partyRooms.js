@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
   PartyRoom.find({}, (error, rooms) => {
     if (error) {
       res.status(400).json({error: error.message})
-    }else if (req.session.currentUser) {
+    }else {
       res.status(200).json(rooms)
     }
   })
@@ -16,17 +16,15 @@ router.get('/', (req, res) => {
 
 //Create partyroom for logged in members.
 router.post('/:id/new', (req, res) => {
-  PartyRoom.create(req.body, (err, partyRoom) => {
-    User.findByIdAndUpdate({_id: req.params.id}, {$push: {partyrooms: partyRoom._id}}, {new: true},
-      (error,updateMember) => {
-        if (error) {
-          res.status(400).json({error: error.message})
-        }else {
-          res.status(200).json(updateMember)
-        }
-      })
-    })
+  PartyRoom.create(req.body, (error, partyRoom) => {
+    if (error) {
+      res.status(400).json({error: error.message})
+    }else {
+      res.status(200).json(partyRoom)
+    }
   })
+})
+
 
 //Edit Partyroom
 router.put('/:id', (req, res) => {
@@ -41,7 +39,7 @@ router.put('/:id', (req, res) => {
 
 //Delete Partyroom
 router.delete('/:id', (req, res) => {
-  Partyroom.findByIdAndRemove(req.params.id, (error, prDelete) => {
+  PartyRoom.findByIdAndRemove(req.params.id, (error, prDelete) => {
     if (error) {
       res.status(400).json({error: error.message})
     } else {
