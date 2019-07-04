@@ -7,6 +7,7 @@ const singleUpload = Upload.single('video')
 
 router.post('/', (req, res) => {
   singleUpload(req, res, (err) => {
+    console.log(res);
 
     return res.json({'videoUrl': req.file.location})
   })

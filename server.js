@@ -53,6 +53,7 @@ mongoose.connection.on('disconnected', () => {
 mongoose.connection.once('open', () => {
   console.log('You are connected to MongoDB!');
 })
+mongoose.set('useCreateIndex', true)
 
 ////////////
 //Middleware
