@@ -8,7 +8,7 @@ router.get('/', (req, res) => {
   PartyRoom.find({}, (error, rooms) => {
     if (error) {
       res.status(400).json({error: error.message})
-    }else if (req.session.currentUser) {
+    }else {
       res.status(200).json(rooms)
     }
   })
@@ -41,10 +41,11 @@ router.put('/:id', (req, res) => {
 
 //Delete Partyroom
 router.delete('/:id', (req, res) => {
-  Partyroom.findByIdAndRemove(req.params.id, (error, prDelete) => {
+  PartyRoom.findByIdAndRemove(req.params.id, (error, prDelete) => {
     if (error) {
       res.status(400).json({error: error.message})
     } else {
+      console.log(prDelete)
       res.status(200).json(prDelete)
     }
   })
