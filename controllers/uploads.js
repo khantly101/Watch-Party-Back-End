@@ -3,9 +3,10 @@ const router = express.Router()
 
 const Upload = require('../models/upload.js')
 
+
 const singleUpload = Upload.single('video')
 
-router.post('/', (req, res) => {
+router.post('/:id', (req, res) => {
   singleUpload(req, res, (err) => {
     console.log(res);
 
