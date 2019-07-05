@@ -6,7 +6,7 @@ const Upload = require('../models/upload.js')
 
 const singleUpload = Upload.single('video')
 
-router.post('/:id', (req, res) => {
+router.post('/', (req, res) => {
   singleUpload(req, res, (err) => {
     console.log(res);
 
