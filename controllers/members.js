@@ -14,7 +14,20 @@ router.get('/', (req, res) => {
     })
 })
 
+//Get route to visit other user profiles
 router.get('/:id', (req, res) => {
+  User.findOne({_id: req.params.id}, (error, foundProf) => {
+    if (error) {
+      res.status(400).json({error: error.message})
+    }else {
+      console.log(foundProf);
+      res.status(200).json(foundProf)
+    }
+  })
+})
+
+// Get user created rooms for the user id
+router.get('/:id/room', (req, res) => {
   PartyRoom.find({creator: req.params.id}).populate('_nameSpace').exec((error, found) => {
     if (error) {
       res.status(400).json({error: error.message})
