@@ -18,7 +18,6 @@ const upload = multer({
   storage: multerS3({
     s3: s3,
     bucket:'vparty',
-    /// The post man request at .location is fine until I add this....
     acl: 'public-read-write',
     metadata: (req, file, cb) => {
       cb(null, {fieldName: file.fieldname})
