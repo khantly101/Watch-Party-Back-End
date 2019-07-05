@@ -1,6 +1,7 @@
 const express = require('express')
 const router = express.Router()
 const User = require('../models/user.js')
+const PartyRoom = require('../models/partyRoom.js')
 
 //Get route to display all users to members
 router.get('/', (req, res) => {
@@ -11,6 +12,30 @@ router.get('/', (req, res) => {
         res.status(200).json(allUsers)
       }
     })
+})
+
+//Get route to visit other user profiles
+router.get('/:id', (req, res) => {
+  User.findOne({_id: req.params.id}, (error, foundProf) => {
+    if (error) {
+      res.status(400).json({error: error.message})
+    }else {
+      console.log(foundProf);
+      res.status(200).json(foundProf)
+    }
+  })
+})
+
+// Get user created rooms for the user id
+router.get('/:id/room', (req, res) => {
+  PartyRoom.find({creator: req.params.id}).populate('_nameSpace').exec((error, found) => {
+    if (error) {
+      res.status(400).json({error: error.message})
+    }else {
+      console.log(found);
+      res.status(200).json(found)
+    }
+  })
 })
 
 //Edit route for members.
