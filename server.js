@@ -97,7 +97,11 @@ io.on(`connection`, (socket) => {
     console.log(Object.keys(socket.rooms)[1])
     // rooms.forEach(function(room){
     //     self.to(room).emit('user left', self.id + 'left');
-    io.in(Object.keys(socket.rooms)[1]).emit(`delete`, `deleting Id`, socket.id)
+    // io.in(Object.keys(socket.rooms)[1]).emit(`delete`, `deleting Id`, socket.id)
+    console.log(`delete client`)
+    console.log(Object.keys(socket.rooms)[1])
+
+    io.to(Object.keys(socket.rooms)[1]).emit(`deleteFromList`, `deleting from list`, socket.id)
     })
 
   socket.on('disconnect', function(){
@@ -108,20 +112,29 @@ io.on(`connection`, (socket) => {
   socket.on(`room`, (partyRoom, roomIndex, userName, pic, sockId) => {
     socket.join(partyRoom._id)
 
-    let newClient = {
-      sockId: sockId,
-      userName: userName,
-      pic: pic
-    }
+    //Lets create an array of active client list to send to front end
+    io.of('/').in(partyRoom._id).clients((error,clients) => {
 
-    console.log(`party room`)
-    partyRoom.clients.push(newClient)
+      let activeClients = []
+      clients.map((client, index) => {
+        let newClient = {
+          sockId: client,
+          socketClientIndex: index,
+          userName: userName,
+          pic: pic
+        }
+        activeClients.push(newClient)
+        console.log(`activeClients`)
+        console.log(activeClients)
+      })
+      //Sending to front end
+      io.to(partyRoom._id).emit(`addToList`, `just entered the room`, partyRoom, roomIndex, activeClients)
+    })
 
-    console.log(partyRoom)
-
+    //Notifying chat room of new client
     io.to(partyRoom._id).emit(`chat message`, `has joined this chat`, pic,userName)
     io.to(partyRoom._id).emit(`client`, `setting socket client object`, partyRoom, sockId, userName, pic )
-    io.to(partyRoom._id).emit(`addToList`, `just entered the room`, partyRoom, roomIndex)
+
     console.log(`${userName} joined: ${ partyRoom._id } with pic ${pic}`)
   })
 
