@@ -8,7 +8,8 @@ const partyRoomSchema = new Schema({
   upload: String,
   img: String,
   description: String,
-  messages: []
+  messages: [],
+  clients:[]
 })
 
 const PartyRoom = mongoose.model('PartyRoom', partyRoomSchema)

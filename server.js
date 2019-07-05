@@ -88,44 +88,68 @@ app.get('/', (req, res) => {
 
 //Enabling socket io connection listener
 io.on(`connection`, (socket) => {
+
   console.log(`A user connected`)
+
+  socket.on('disconnecting', function(){
+    console.log(`Subscribed Rooms ${socket.rooms}`)
+    console.log(socket.rooms)
+    console.log(Object.keys(socket.rooms)[1])
+    // rooms.forEach(function(room){
+    //     self.to(room).emit('user left', self.id + 'left');
+    io.in(Object.keys(socket.rooms)[1]).emit(`delete`, `deleting Id`, socket.id)
+    })
+
   socket.on('disconnect', function(){
     console.log('user disconnected')
   })
 
-//Socket Joining Chat Room
-  socket.on(`room`, (chatRoom, userName, pic, id) => {
-    socket.join(chatRoom)
-    io.to(chatRoom).emit(`chat message`, `has joined this chat`, pic,userName)
-    io.to(chatRoom).emit(`setId`, `setting Id`, id)
-    console.log(`${userName} joined: ${ chatRoom } with pic ${pic}`)
+  //Socket Joining Chat Room
+  socket.on(`room`, (partyRoom, roomIndex, userName, pic, sockId) => {
+    socket.join(partyRoom._id)
+
+    let newClient = {
+      sockId: sockId,
+      userName: userName,
+      pic: pic
+    }
+
+    console.log(`party room`)
+    partyRoom.clients.push(newClient)
+
+    console.log(partyRoom)
+
+    io.to(partyRoom._id).emit(`chat message`, `has joined this chat`, pic,userName)
+    io.to(partyRoom._id).emit(`client`, `setting socket client object`, partyRoom, sockId, userName, pic )
+    io.to(partyRoom._id).emit(`addToList`, `just entered the room`, partyRoom, roomIndex)
+    console.log(`${userName} joined: ${ partyRoom._id } with pic ${pic}`)
   })
 
   //Trasmiting message back to socket connections inside unique room
-  socket.on(`sendMessage`, (msg,chatRoom,pic,userName) => {
+  socket.on(`sendMessage`, (msg,partyRoom,pic,userName) => {
     //Lets Check to see if server is receiving message from client.js
     console.log(`this message was sent: ${ msg }`)
     //Lets Check to see if server is receiving room name from client.js
-    console.log(`the room is: ${ chatRoom }`)
+    console.log(`the room is: ${ partyRoom }`)
     //Send message back to room that message was sent from
-    io.to(chatRoom).emit(`recieveMessage`, msg,pic,userName)
+    io.to(partyRoom).emit(`recieveMessage`, msg,pic,userName)
   })
 
   //Send Video Start to other sockets
-  socket.on(`play`, (msg,chatRoom,playerId) => {
+  socket.on(`play`, (msg,partyRoom,playerId) => {
     //Lets Check to see if server is receiving message from client.js
     console.log(msg)
-    console.log(chatRoom)
+    console.log(partyRoom)
     //Send message back to room that message was sent from
-    io.to(chatRoom).emit(`play`, msg, playerId)
+    io.to(partyRoom).emit(`play`, msg, playerId)
   })
-  socket.on(`stop`, (msg,chatRoom,playerId) => {
+
+  socket.on(`stop`, (msg,partyRoom,playerId) => {
     //Lets Check to see if server is receiving message from client.js
     console.log(msg)
-    console.log(chatRoom)
-    console.log(playerId)
+    console.log(partyRoom)
     //Send message back to room that message was sent from
-    io.to(chatRoom).emit(`stop`, msg, playerId)
+    io.to(partyRoom).emit(`stop`, msg, playerId)
   })
 
 })
