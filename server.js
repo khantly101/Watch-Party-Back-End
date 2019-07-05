@@ -96,7 +96,11 @@ io.on(`connection`, (socket) => {
     console.log(Object.keys(socket.rooms)[1])
     // rooms.forEach(function(room){
     //     self.to(room).emit('user left', self.id + 'left');
-    io.in(Object.keys(socket.rooms)[1]).emit(`delete`, `deleting Id`, socket.id)
+    // io.in(Object.keys(socket.rooms)[1]).emit(`delete`, `deleting Id`, socket.id)
+    console.log(`delete client`)
+    console.log(Object.keys(socket.rooms)[1])
+
+    io.to(Object.keys(socket.rooms)[1]).emit(`deleteFromList`, `deleting from list`, socket.id)
     })
 
   socket.on('disconnect', function(){
