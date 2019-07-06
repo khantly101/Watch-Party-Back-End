@@ -15,7 +15,7 @@ const io = require('socket.io')(http)
 
 //Configuration
 const PORT = process.env.PORT ||3003
-const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/vparty'
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/vparty'
 const sessionSecret = process.env.SECRET
 
 //Controllers
@@ -43,7 +43,7 @@ const corsOptions = {
 //////////////
 
 //Configuration
-mongoose.connect(mongoURI, { useNewUrlParser: true })
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true })
 mongoose.connection.on('error', (error) => {
   console.log(error.mesage + 'check mongodb');
 })
