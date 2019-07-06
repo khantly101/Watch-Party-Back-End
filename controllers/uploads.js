@@ -10,6 +10,7 @@ const upload = Upload.single('upload')
 
 
 router.post('/:id', (req, res) => {
+  console.log(req.body);
   upload(req, res, (err) => {
     console.log(req.file.location);
     console.log(req.file);
