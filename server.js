@@ -27,7 +27,7 @@ const uploadController = require('./controllers/uploads.js')
 
 //Cors Policy
 /////////////
-const whiteList = ['https://khantly101.github.io/']
+const whiteList = ['https://khantly101.github.io']
 const corsOptions = {
   origin: (origin, callback) => {
     if (origin === undefined || whiteList.indexOf(origin) !== -1) {
