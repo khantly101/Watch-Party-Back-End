@@ -15,7 +15,7 @@ const io = require('socket.io')(http)
 
 //Configuration
 const PORT = process.env.PORT ||3003
-const mongoURI = process.env.MONGODB_URI || 'mongodb://localhost:27017/vparty'
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/vparty'
 const sessionSecret = process.env.SECRET
 
 //Controllers
@@ -27,7 +27,7 @@ const uploadController = require('./controllers/uploads.js')
 
 //Cors Policy
 /////////////
-const whiteList = ['http://localhost:3000']
+const whiteList = ['https://khantly101.github.io']
 const corsOptions = {
   origin: (origin, callback) => {
     if (origin === undefined || whiteList.indexOf(origin) !== -1) {
@@ -44,7 +44,7 @@ const corsOptions = {
 
 //Configuration
 mongoose.set('useCreateIndex', true)
-mongoose.connect(mongoURI, { useNewUrlParser: true })
+mongoose.connect(MONGODB_URI, { useNewUrlParser: true })
 mongoose.connection.on('error', (error) => {
   console.log(error.mesage + 'check mongodb');
 })
