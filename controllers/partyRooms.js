@@ -43,6 +43,7 @@ router.delete('/:id', (req, res) => {
     if (error) {
       res.status(400).json({error: error.message})
     } else {
+      console.log(prDelete)
       res.status(200).json(prDelete)
     }
   })

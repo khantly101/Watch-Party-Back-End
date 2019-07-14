@@ -43,6 +43,7 @@ const corsOptions = {
 //////////////
 
 //Configuration
+mongoose.set('useCreateIndex', true)
 mongoose.connect(MONGODB_URI, { useNewUrlParser: true })
 mongoose.connection.on('error', (error) => {
   console.log(error.mesage + 'check mongodb');
